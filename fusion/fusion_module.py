@@ -23,6 +23,9 @@ class FusionModule(MIMOPipelineModule):
         elif self.name == "nerf":
             from fusion.nerf_fusion import NerfFusion
             self.fusion = NerfFusion(self.name, self.args, self.device)
+        elif self.name == "dump":
+            from fusion.dump_fusion import DumpFusion
+            self.fusion = DumpFusion(self.name, self.args, self.device)
         else:
             raise NotImplementedError
         return super().initialize_module()

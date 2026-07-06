@@ -41,11 +41,12 @@ def parse_args():
 
     #parser.add_argument("--gui", action="store_true", help="Run the testbed GUI interactively.")
     parser.add_argument("--slam", action="store_true", help="Run SLAM.")
-    parser.add_argument("--fusion", type=str, default='', choices=['tsdf', 'sigma', 'nerf', ''],
+    parser.add_argument("--fusion", type=str, default='', choices=['tsdf', 'sigma', 'nerf', 'dump', ''],
                         help="Fusion approach ('' for none):\n\
                             -`tsdf' classical tsdf-fusion using Open3D\n \
                             -`sigma' tsdf-fusion with uncertainty values (Rosinol22wacv)\n \
-                            -`nerf' radiance field reconstruction using Instant-NGP.")
+                            -`nerf' radiance field reconstruction using Instant-NGP\n \
+                            -`dump' dump the data for later processing.")
 
     # GUI ARGS
     parser.add_argument("--gui", action="store_true", help="Run O3D Gui, use when volume='tsdf'or'sigma'.")
@@ -111,7 +112,7 @@ def run(args):
             fusion_module.register_input_queue("data", data_for_fusion_output_queue)
 
     # Create interactive Gui
-    gui = args.gui and args.fusion != 'nerf' # nerf has its own gui
+    gui = args.gui and args.fusion not in ('nerf', 'dump')
     if gui:
         gui_module = GuiModule("Open3DGui", args, device=cuda_slam) # don't use cuda:1, o3d doesn't work...
         data_provider_module.register_output_queue(data_for_viz_output_queue)
