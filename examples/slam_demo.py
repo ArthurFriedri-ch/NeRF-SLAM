@@ -47,6 +47,7 @@ def parse_args():
                             -`sigma' tsdf-fusion with uncertainty values (Rosinol22wacv)\n \
                             -`nerf' radiance field reconstruction using Instant-NGP\n \
                             -`dump' dump the data for later processing.")
+    parser.add_argument("--dump_dir", type=str, help="Path to the directory where dumped data will be stored.")
 
     # GUI ARGS
     parser.add_argument("--gui", action="store_true", help="Run O3D Gui, use when volume='tsdf'or'sigma'.")

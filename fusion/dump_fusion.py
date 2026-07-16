@@ -57,11 +57,12 @@ class DumpFusion:
 
             record = slam_interface.Record(
                 index=int(f_idx),
-                pose_c2w=c2w[i].astype(np.float64),
-                depth=depths[i].cpu().numpy().astype(np.float32),          # metres, full-res
-                depth_cov=depths_cov_up[i].cpu().numpy().astype(np.float32),  # depth-space variance
+                pose=c2w[i].astype(np.float64),
+                pose_frame=slam_interface.POSE_FRAME_C2W,
+                depth=depths[i].cpu().numpy().astype(np.float32),
+                depth_cov=depths_cov_up[i].cpu().numpy().astype(np.float32),
                 intrinsics=K,
-                rgb=images[i].permute(1, 2, 0).cpu().numpy().astype(np.uint8),  # HWC, 0..255
+                rgb=images[i].permute(1, 2, 0).cpu().numpy().astype(np.uint8),
                 gt_depth=(gt_depths[i].cpu().numpy() if gt_depths is not None else None),
             )
             slam_interface.write(record, self.out_dir)
