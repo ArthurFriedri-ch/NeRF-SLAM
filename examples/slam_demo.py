@@ -34,7 +34,7 @@ def parse_args():
                         help="Path to the dataset directory",
                         default="/home/tonirv/Datasets/euroc/V1_01_easy")
     parser.add_argument('--dataset_name', type=str, default='euroc',
-                        choices=['euroc', 'nerf', 'replica', 'real'],
+                        choices=['euroc', 'nerf', 'replica', 'tum', 'real'],
                         help='Dataset format to use.')
 
     parser.add_argument("--mask_type", type=str, default='ours', choices=['no_depth', 'raw', 'ours', 'ours_w_thresh'])
