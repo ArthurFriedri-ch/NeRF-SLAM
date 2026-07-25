@@ -1,3 +1,4 @@
+import cv2
 import torch
 import lietorch
 
@@ -67,7 +68,10 @@ class MotionFilter:
 
             # Check motion magnitue / add new frame to video
             has_enough_motion = delta.norm(dim=-1).mean().item() > self.min_flow_thresh
-            if has_enough_motion:
+            # Maximum motion blur threshold to increase output quality
+
+
+            if has_enough_motion and not self.is_blurry(image):
                 self.add_frame_to_video(timestamp, image, img_normalized, feature_map, depth, intrinsics)
                 self.skipped_frames = 0
             else:
@@ -83,3 +87,11 @@ class MotionFilter:
                             depth_img, # If available
                             intrinsics / 8.0,
                             feature_map, context_maps[0,0], gru_input_maps[0,0])
+
+    def is_blurry(self, image, threshold=100.0):
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        laplacian_var = cv2.Laplacian(gray_image, cv2.CV_64F).var()
+
+        print("Variance of Laplacian:", laplacian_var)
+        return laplacian_var < threshold, laplacian_var
